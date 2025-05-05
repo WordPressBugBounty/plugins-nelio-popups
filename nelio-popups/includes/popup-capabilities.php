@@ -50,6 +50,19 @@ function add_capabilities() {
 		}//end foreach
 	}//end if
 
+	if ( is_multisite() ) {
+		$caps         = get_editor_caps();
+		$super_admins = get_super_admins();
+		foreach ( $super_admins as $username ) {
+			$user = get_user_by( 'login', $username );
+			if ( $user ) {
+				foreach ( $caps as $cap ) {
+					$user->add_cap( $cap );
+				}//end foreach
+			}//end if
+		}//end foreach
+	}//end if
+
 	$role = get_role( 'shop_manager' );
 	if ( $role ) {
 		foreach ( get_editor_caps() as $cap ) {
@@ -84,6 +97,19 @@ function remove_capabilities() {
 	if ( $role ) {
 		foreach ( get_editor_caps() as $cap ) {
 			$role->remove_cap( $cap );
+		}//end foreach
+	}//end if
+
+	if ( is_multisite() ) {
+		$caps         = get_editor_caps();
+		$super_admins = get_super_admins();
+		foreach ( $super_admins as $username ) {
+			$user = get_user_by( 'login', $username );
+			if ( $user ) {
+				foreach ( $caps as $cap ) {
+					$user->remove_cap( $cap );
+				}//end foreach
+			}//end if
 		}//end foreach
 	}//end if
 

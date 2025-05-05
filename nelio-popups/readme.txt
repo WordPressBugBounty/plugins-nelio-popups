@@ -3,9 +3,9 @@ Contributors: nelio, davilera, avillegasn
 Donate Link: https://neliosoftware.com/popups/?utm_source=wordpressorg&utm_medium=referral&utm_campaign=nelio-popups
 Tags: popup, modal, conversion, exit intent, block editor
 Requires PHP: 7.4
-Requires at least: 5.7
-Tested up to: 6.7
-Stable tag: 1.2.6
+Requires at least: 6.6
+Tested up to: 6.8
+Stable tag: 1.2.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,11 @@ A lot of things:
 
 
 == Changelog ==
+
+= 1.2.7 (May 5, 2025) =
+* Fix compatibility with super admin users in multisite installations.
+* Fix rendering issue for preview of inactive popups.
+* Make popups not public to prevent them from having their own URLs.
 
 = 1.2.6 (February 4, 2025) =
 * Trigger JavaScript events on popup open/close.
@@ -303,5 +308,5 @@ A lot of things:
 
 == Upgrade Notice ==
 
-= 1.2.6 (February 4, 2025) =
-Trigger JS events on popup open/close.
+= 1.2.7 (May 5, 2025) =
+Some improvements and minor fixes.

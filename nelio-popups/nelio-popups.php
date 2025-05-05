@@ -6,10 +6,10 @@
  *
  * Author:      Nelio Software
  * Author URI:  https://neliosoftware.com
- * Version:     1.2.6
+ * Version:     1.2.7
  * Text Domain: nelio-popups
  *
- * Requires at least: 5.7
+ * Requires at least: 6.6
  * Requires PHP:      7.4
  *
  * License:     GPL-2.0+

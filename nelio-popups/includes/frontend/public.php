@@ -50,7 +50,8 @@ add_action(
 					return;
 				}//end if
 
-				$active_popups = get_active_popups();
+				$previewed_popup = get_previewed_popup();
+				$active_popups   = empty( $previewed_popup ) ? get_active_popups() : array( $previewed_popup );
 				foreach ( $active_popups as $active_popup ) {
 					$size  = isset( $active_popup['config']['size'] )
 						? $active_popup['config']['size']
@@ -92,13 +93,7 @@ add_action(
 function get_frontend_settings() {
 	$settings = array(
 		'context' => get_wordpress_context(),
-		'popups'  => array_map(
-			function ( $popup ) {
-				unset( $popup['content'] );
-				return $popup;
-			},
-			get_active_popups()
-		),
+		'popups'  => array_map( __NAMESPACE__ . '\remove_content', get_active_popups() ),
 	);
 
 	/**
@@ -118,7 +113,7 @@ function get_wordpress_context() {
 		'postPopups'   => is_singular() ? get_post_popups( get_the_ID() ) : 'auto',
 		'postType'     => get_post_type(),
 		'parents'      => is_singular() ? get_post_ancestors( get_the_ID() ) : array(),
-		'previewPopup' => get_previewed_popup(),
+		'previewPopup' => remove_content( get_previewed_popup() ),
 		'specialPage'  => get_special_page(),
 		'template'     => is_singular() ? get_page_template_slug( get_the_ID() ) : '',
 	);
@@ -254,7 +249,6 @@ function get_previewed_popup() {
 	$popup = load_popup();
 
 	wp_reset_postdata();
-	unset( $popup['content'] );
 	return $popup;
 }//end get_previewed_popup()
 
@@ -271,3 +265,16 @@ function get_special_page() {
 		return 'none';
 	}//end if
 }//end get_special_page()
+
+function remove_content( $popup ) {
+	if ( empty( $popup ) ) {
+		return $popup;
+	}//end if
+
+	if ( ! isset( $popup['content'] ) ) {
+		return $popup['content'];
+	}//end if
+
+	unset( $popup['content'] );
+	return $popup;
+}//end remove_content()

@@ -48,7 +48,7 @@ function register_popups() {
 		'labels'              => $labels,
 		'menu_icon'           => get_icon(),
 		'menu_position'       => 25,
-		'public'              => true,
+		'public'              => false,
 		'publicly_queryable'  => true,
 		'rewrite'             => false,
 		'show_in_admin_bar'   => true,
