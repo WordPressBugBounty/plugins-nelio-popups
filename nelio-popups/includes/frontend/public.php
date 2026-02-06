@@ -4,19 +4,17 @@ namespace Nelio_Popups\Frontend;
 
 use WP_Query;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}//end if
+defined( 'ABSPATH' ) || exit;
 
 function enqueue_popups() {
 
 	if ( is_non_popup_preview() && ! show_popup_in_preview() ) {
 		return;
-	}//end if
+	}
 
 	if ( is_singular( 'nelio_popup' ) ) {
 		return;
-	}//end if
+	}
 
 	nelio_popups_enqueue_style( 'public' );
 	nelio_popups_enqueue_style( 'block-customizations', array( 'nelio-popups-public' ) );
@@ -35,7 +33,7 @@ function enqueue_popups() {
 		),
 		'before'
 	);
-}//end enqueue_popups()
+}
 add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_popups' );
 
 add_action(
@@ -48,7 +46,7 @@ add_action(
 			function () use ( &$popups ) {
 				if ( is_non_popup_preview() && ! show_popup_in_preview() ) {
 					return;
-				}//end if
+				}
 
 				$previewed_popup = get_previewed_popup();
 				$active_popups   = empty( $previewed_popup ) ? get_active_popups() : array( $previewed_popup );
@@ -73,7 +71,7 @@ add_action(
 						esc_attr( 'nelio-popup-content-' . $active_popup['id'] ),
 						do_shortcode( do_blocks( $active_popup['content'] ) )
 					);
-				}//end foreach
+				}
 			}
 		);
 
@@ -104,7 +102,7 @@ function get_frontend_settings() {
 	 * @since 1.0.0
 	 */
 	return apply_filters( 'nelio_popups_frontend_settings', $settings );
-}//end get_frontend_settings()
+}
 
 function get_wordpress_context() {
 	return array(
@@ -117,7 +115,7 @@ function get_wordpress_context() {
 		'specialPage'  => get_special_page(),
 		'template'     => is_singular() ? get_page_template_slug( get_the_ID() ) : '',
 	);
-}//end get_wordpress_context()
+}
 
 function get_active_popups() {
 	$popups = array();
@@ -137,46 +135,58 @@ function get_active_popups() {
 	if ( ! $query->have_posts() ) {
 		wp_reset_postdata();
 		return array();
-	}//end if
+	}
 
 	while ( $query->have_posts() ) {
 		$query->the_post();
 		$popups[] = load_popup();
-	}//end while
+	}
 
 	wp_reset_postdata();
 
 	$popup_ids = array_column( $popups, 'id' );
+	$settings  = array(
+		'context' => get_wordpress_context(),
+		'popups'  => $popups,
+	);
+	$settings  = apply_filters( 'nelio_popups_frontend_settings', $settings );
+	$context   = $settings['context'];
 
 	/**
 	 * Filters the list of active popups.
 	 *
-	 * @param int[] $popup_ids list of active popup ids.
+	 * @param int[] $popup_ids List of active popup IDs.
+	 * @param array $popups    Array of popup objects. (Added in 1.3.2)
+	 * @param array $context   The WordPress context information. (Added in 1.3.2)
+	 *
+	 * @return int[] Filtered list of active popup IDs.
 	 *
 	 * @since 1.0.0
+	 * @since 1.3.2 The $popups and $context parameters were added to this filter.
 	 */
-	$popup_ids = apply_filters( 'nelio_popups_active_popups', $popup_ids );
+	$popup_ids = apply_filters( 'nelio_popups_active_popups', $popup_ids, $popups, $context );
 
-	return array_filter(
+	$popups = array_filter(
 		$popups,
 		function ( $popup ) use ( $popup_ids ) {
 			return in_array( $popup['id'], $popup_ids, true );
 		}
 	);
-}//end get_active_popups()
+	return array_values( $popups );
+}
 
 function get_post_popups( $post_id ) {
 	$popups = get_post_meta( $post_id, '_nelio_popups_active_popup', true );
 	$popups = empty( $popups ) ? 'auto' : $popups;
 	if ( 'auto' === $popups ) {
 		return 'auto';
-	}//end if
+	}
 
 	$popups = explode( ',', $popups );
 	$popups = array_map( 'absint', $popups );
 	$popups = array_values( array_filter( $popups ) );
 	return $popups;
-}//end get_post_popups()
+}
 
 function get_style_vars() {
 	$default = array(
@@ -197,9 +207,9 @@ function get_style_vars() {
 	$vars = '';
 	foreach ( $values as $name => $value ) {
 		$vars .= "--nelio-popups-{$name}: $value;\n";
-	}//end foreach
+	}
 	return ":root {\n{$vars}}";
-}//end get_style_vars()
+}
 
 function show_popup_in_preview() {
 	/**
@@ -210,15 +220,15 @@ function show_popup_in_preview() {
 	 * @since 1.0.0
 	 */
 	return apply_filters( 'nelio_popups_show_in_preview', false );
-}//end show_popup_in_preview()
+}
 
 function is_non_popup_preview() {
 	if ( ! is_preview() ) {
 		return false;
-	}//end if
+	}
 	$popup = get_previewed_popup();
 	return empty( $popup );
-}//end is_non_popup_preview()
+}
 
 function get_previewed_popup() {
 	$popup_id = isset( $_GET['nelio-popup-preview'] )
@@ -231,7 +241,7 @@ function get_previewed_popup() {
 
 	if ( ! $valid ) {
 		return false;
-	}//end if
+	}
 
 	$query = new WP_Query(
 		array(
@@ -242,7 +252,7 @@ function get_previewed_popup() {
 	if ( ! $query->have_posts() ) {
 		wp_reset_postdata();
 		return false;
-	}//end if
+	}
 
 	$query->the_post();
 
@@ -250,7 +260,7 @@ function get_previewed_popup() {
 
 	wp_reset_postdata();
 	return $popup;
-}//end get_previewed_popup()
+}
 
 function get_special_page() {
 	if ( is_404() ) {
@@ -263,18 +273,18 @@ function get_special_page() {
 		return 'search-result-page';
 	} else {
 		return 'none';
-	}//end if
-}//end get_special_page()
+	}
+}
 
 function remove_content( $popup ) {
 	if ( empty( $popup ) ) {
 		return $popup;
-	}//end if
+	}
 
 	if ( ! isset( $popup['content'] ) ) {
 		return $popup['content'];
-	}//end if
+	}
 
 	unset( $popup['content'] );
 	return $popup;
-}//end remove_content()
+}

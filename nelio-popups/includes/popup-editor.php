@@ -2,14 +2,12 @@
 
 namespace Nelio_Popups\Popup_Editor;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}//end if
+defined( 'ABSPATH' ) || exit;
 
-function enqueue_assets() {
+function enqueue_block_editor_assets() {
 	if ( get_post_type() !== 'nelio_popup' ) {
 		return;
-	}//end if
+	}
 
 	$settings = array(
 		'popupCloseBlocks' => get_popup_blocks_with_close_control(),
@@ -25,9 +23,6 @@ function enqueue_assets() {
 	 */
 	$settings = apply_filters( 'nelio_popups_editor_settings', $settings );
 
-	nelio_popups_enqueue_style( 'block-customizations' );
-	nelio_popups_enqueue_script( 'block-customizations' );
-
 	nelio_popups_enqueue_script( 'popup-editor' );
 	wp_add_inline_script(
 		'nelio-popups-popup-editor',
@@ -37,8 +32,18 @@ function enqueue_assets() {
 		),
 		'before'
 	);
-}//end enqueue_assets()
-add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_assets' );
+}
+add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_block_editor_assets' );
+
+function enqueue_block_assets() {
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	nelio_popups_enqueue_style( 'block-customizations' );
+	nelio_popups_enqueue_script( 'block-customizations' );
+}
+add_action( 'enqueue_block_assets', __NAMESPACE__ . '\enqueue_block_assets' );
 
 // ======
 // HELPERS
@@ -53,7 +58,7 @@ function get_popup_blocks_with_close_control() {
 	 * @since 1.0.0
 	 */
 	return apply_filters( 'nelio_popups_blocks_with_close_control', array( 'core/button' ) );
-}//end get_popup_blocks_with_close_control()
+}
 
 function get_active_plugins() {
 	$clean_extension = function ( $plugin ) {
@@ -67,4 +72,4 @@ function get_active_plugins() {
 	$plugins = array_map( $clean_extension, $plugins );
 
 	return $plugins;
-}//end get_active_plugins()
+}

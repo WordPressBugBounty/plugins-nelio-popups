@@ -2,16 +2,14 @@
 
 namespace Nelio_Popups\Update;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}//end if
+defined( 'ABSPATH' ) || exit;
 
 function plugin_update() {
 	if ( version_compare( get_option( 'nelio_popups_version', '0.0.0' ), '1.0.14', '<' ) ) {
 		do_update();
 		update_option( 'nelio_popups_version', nelio_popups_version() );
-	}//end if
-}//end plugin_update()
+	}
+}
 add_action( 'plugins_loaded', __NAMESPACE__ . '\plugin_update' );
 
 function do_update() {
@@ -28,13 +26,13 @@ function do_update() {
 		$groups = array();
 		if ( is_array( $target ) && ! empty( $target['type'] ) && 'condition-based-target' === $target['type'] && ! empty( $target['groups'] ) ) {
 			$groups = $target['groups'];
-		}//end if
+		}
 
 		$triggers   = get_post_meta( $popup->ID, '_nelio_popups_triggers', true );
 		$conditions = create_conditions( $groups, $triggers );
 		if ( ! empty( $conditions ) ) {
 			update_post_meta( $popup->ID, '_nelio_popups_conditions', $conditions );
-		}//end if
+		}
 
 		$triggers = fix_triggers( $triggers );
 		update_post_meta( $popup->ID, '_nelio_popups_triggers', $triggers );
@@ -53,10 +51,10 @@ function do_update() {
 						'type' => 'full-site-target',
 					)
 				);
-			}//end if
-		}//end if
-	}//end foreach
-}//end do_update()
+			}
+		}
+	}
+}
 
 function fix_groups( $groups ) {
 	$groups = array_map(
@@ -81,7 +79,7 @@ function fix_groups( $groups ) {
 			}
 		)
 	);
-}//end fix_groups()
+}
 
 function create_conditions( $groups, $triggers ) {
 	$triggers_to_transform = array_values(
@@ -118,22 +116,22 @@ function create_conditions( $groups, $triggers ) {
 
 	if ( empty( $groups ) && ! empty( $triggers_to_transform ) ) {
 		return array( $triggers_to_transform );
-	}//end if
+	}
 
 	if ( empty( $triggers_to_transform ) ) {
 		return $groups;
-	}//end if
+	}
 
 	return array_map(
 		function ( $group ) use ( $triggers_to_transform ) {
 			foreach ( $triggers_to_transform as $trigger ) {
 				array_push( $group, $trigger );
-			}//end foreach
+			}
 			return $group;
 		},
 		$groups
 	);
-}//end create_conditions()
+}
 
 function fix_triggers( $triggers ) {
 	$triggers = array_values(
@@ -146,6 +144,6 @@ function fix_triggers( $triggers ) {
 	);
 	if ( empty( $triggers ) ) {
 		$triggers = array( array( 'type' => 'page-view' ) );
-	}//end if
+	}
 	return $triggers;
-}//end fix_triggers()
+}

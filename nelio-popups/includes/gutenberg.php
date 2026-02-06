@@ -2,18 +2,16 @@
 
 namespace Nelio_Popups\Gutenberg;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}//end if
+defined( 'ABSPATH' ) || exit;
 
 function enqueue_assets() {
 	if ( empty( get_post_type() ) ) {
 		return;
-	}//end if
+	}
 
 	if ( get_post_type() === 'nelio_popup' ) {
 		return;
-	}//end if
+	}
 
 	$post_types = array_keys(
 		array_filter(
@@ -58,7 +56,7 @@ function enqueue_assets() {
 		),
 		'before'
 	);
-}//end enqueue_assets()
+}
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_assets' );
 
 function register_active_popup_meta() {
@@ -82,11 +80,11 @@ function register_active_popup_meta() {
 					delete_post_meta( $object->ID, "_{$field}" );
 				} else {
 					update_post_meta( $object->ID, "_{$field}", $value );
-				}//end if
+				}
 			},
 		)
 	);
-}//end register_active_popup_meta()
+}
 add_action( 'init', __NAMESPACE__ . '\register_active_popup_meta', 5 );
 
 function get_popup_blocks_with_open_control() {
@@ -98,4 +96,4 @@ function get_popup_blocks_with_open_control() {
 	 * @since 1.0.15
 	 */
 	return apply_filters( 'nelio_popups_blocks_with_open_control', array( 'core/button' ) );
-}//end get_popup_blocks_with_open_control()
+}

@@ -1,23 +1,21 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}//end if
+defined( 'ABSPATH' ) || exit;
 
 function nelio_popups_get_script_version( $name ) {
 	$file = nelio_popups_path() . "/dist/nelio-popups-{$name}.asset.php";
 	if ( ! file_exists( $file ) ) {
 		return nelio_popups_version();
-	}//end if
+	}
 	$asset = include $file;
 	return $asset['version'];
-}//end nelio_popups_get_script_version()
+}
 
 function nelio_popups_register_script( $name ) {
 	$file = nelio_popups_path() . "/dist/nelio-popups-{$name}.asset.php";
 	if ( ! file_exists( $file ) ) {
 		return;
-	}//end if
+	}
 
 	$asset = include $file;
 	// NOTE Bug fix with @wordpress/core-data package.
@@ -49,13 +47,13 @@ function nelio_popups_register_script( $name ) {
 
 	if ( in_array( 'wp-i18n', $asset['dependencies'], true ) ) {
 		wp_set_script_translations( "nelio-popups-{$name}", 'nelio-popups' );
-	}//end if
-}//end nelio_popups_register_script()
+	}
+}
 
 function nelio_popups_enqueue_script( $name ) {
 	nelio_popups_register_script( $name );
 	wp_enqueue_script( "nelio-popups-{$name}" );
-}//end nelio_popups_enqueue_script()
+}
 
 function nelio_popups_register_style( $name, $deps = array() ) {
 	wp_register_style(
@@ -64,9 +62,9 @@ function nelio_popups_register_style( $name, $deps = array() ) {
 		$deps,
 		nelio_popups_get_script_version( $name )
 	);
-}//end nelio_popups_register_style()
+}
 
 function nelio_popups_enqueue_style( $name, $deps = array() ) {
 	nelio_popups_register_style( $name, $deps );
 	wp_enqueue_style( "nelio-popups-{$name}" );
-}//end nelio_popups_enqueue_style()
+}

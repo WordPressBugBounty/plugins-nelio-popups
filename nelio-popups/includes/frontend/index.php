@@ -2,9 +2,8 @@
 
 namespace Nelio_Popups\Frontend;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}//end if
+defined( 'ABSPATH' ) || exit;
 
 require_once untrailingslashit( __DIR__ ) . '/public.php';
 require_once untrailingslashit( __DIR__ ) . '/loaders.php';
+require_once untrailingslashit( __DIR__ ) . '/targets.php';

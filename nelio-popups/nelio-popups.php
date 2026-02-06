@@ -6,7 +6,7 @@
  *
  * Author:      Nelio Software
  * Author URI:  https://neliosoftware.com
- * Version:     1.2.7
+ * Version:           1.3.6
  * Text Domain: nelio-popups
  *
  * Requires at least: 6.6
@@ -16,26 +16,28 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}//end if
+defined( 'ABSPATH' ) || exit;
 
 define( 'NELIO_POPUPS', true );
 
 function nelio_popups_path() {
 	return untrailingslashit( plugin_dir_path( __FILE__ ) );
-}//end nelio_popups_path()
+}
 
 function nelio_popups_url() {
 	return untrailingslashit( plugin_dir_url( __FILE__ ) );
-}//end nelio_popups_url()
+}
 
 function nelio_popups_version() {
 	$data = get_file_data( __FILE__, array( 'Version' ), 'plugin' );
 	return $data[0];
-}//end nelio_popups_version()
+}
 
 function nelio_popups_init() {
+
+	require_once nelio_popups_path() . '/includes/lib/nelio/helpers/index.php';
+	require_once nelio_popups_path() . '/includes/lib/nelio/zod/index.php';
+
 	require_once nelio_popups_path() . '/includes/popups.php';
 	require_once nelio_popups_path() . '/includes/utils.php';
 
@@ -49,6 +51,6 @@ function nelio_popups_init() {
 
 	if ( ! is_admin() ) {
 		require_once nelio_popups_path() . '/includes/frontend/index.php';
-	}//end if
-}//end nelio_popups_init()
+	}
+}
 nelio_popups_init();

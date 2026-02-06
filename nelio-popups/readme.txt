@@ -4,8 +4,8 @@ Donate Link: https://neliosoftware.com/popups/?utm_source=wordpressorg&utm_mediu
 Tags: popup, modal, conversion, exit intent, block editor
 Requires PHP: 7.4
 Requires at least: 6.6
-Tested up to: 6.8
-Stable tag: 1.2.7
+Tested up to: 6.9
+Stable tag: 1.3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,10 @@ Check out some of our most popular plugins:
 
 == Frequently Asked Questions ==
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the Nelio Popups plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/ee0a7833-94e4-45c1-92ec-66f2aa38c8e1). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 = Can I use Nelio Popups without the block editor? =
 
 No. Nelio Popups relies on the block editor (Gutenberg) that comes with modern WordPress versions. You can't use Nelio Popups with the classic editor or any other content editor for WordPress.
@@ -134,6 +138,36 @@ A lot of things:
 
 
 == Changelog ==
+
+= 1.3.6 (January 19, 2026) =
+* Prevent contributor users from publishing new popups.
+
+= 1.3.5 (December 29, 2025) =
+* Fix server evaluation to determine if popup is visible or not.
+
+= 1.3.4 (December 22, 2025) =
+* Fix `popups` array in frontend settings to prevent `map` error.
+
+= 1.3.3 (December 22, 2025) =
+* Fix sortable columns.
+
+= 1.3.2 (November 27, 2025) =
+* Add setting to evaluate location conditions on the server to determine if a popup should be displayed on the frontend.
+* Remove analytics data associated with a popup when the popup is deleted.
+* Add per-popup toggle to manage analytics tracking; when disabled, no analytics events are collected for that popup.
+* Add filter `nelio_popups_premium_skip_insert` to short-circuit analytics data insertion.
+* Fix issue checking location condition with selected terms.
+
+= 1.3.1 (November 20, 2025) =
+* Fix issue on certain setups that freezed the popup editor.
+* Sanitize and validate popup fields.
+
+= 1.3.0 (November 6, 2025) =
+* Improve preview of popups inside the block editor.
+* Allow negative numbers in popup shadow offsets.
+
+= 1.2.8 (October 28, 2025) =
+* Add setting to customize the size of the close button.
 
 = 1.2.7 (May 5, 2025) =
 * Fix compatibility with super admin users in multisite installations.
@@ -308,5 +342,5 @@ A lot of things:
 
 == Upgrade Notice ==
 
-= 1.2.7 (May 5, 2025) =
-Some improvements and minor fixes.
+= 1.3.6 (January 19, 2026) =
+Fix bugs.

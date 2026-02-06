@@ -2,9 +2,7 @@
 
 namespace Nelio_Popups\Frontend;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}//end if
+defined( 'ABSPATH' ) || exit;
 
 function load_popup() {
 	$popup_id = get_the_ID();
@@ -23,10 +21,10 @@ function load_popup() {
 			)
 		),
 	);
-}//end load_popup()
+}
 
 function load_popup_meta( $popup_id, $key ) {
 	$exists = metadata_exists( 'post', $popup_id, "_nelio_popups_{$key}" );
 	$value  = get_post_meta( $popup_id, "_nelio_popups_{$key}", true );
 	return $exists ? array( $key => $value ) : array();
-}//end load_popup_meta()
+}

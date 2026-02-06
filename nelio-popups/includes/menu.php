@@ -2,14 +2,13 @@
 
 namespace Nelio_Popups\Menu;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}//end if
+defined( 'ABSPATH' ) || exit;
 
 function register_submenus() {
+	// phpcs:ignore WordPress.WP.Capabilities.Unknown
 	if ( ! current_user_can( 'edit_others_nelio_popups' ) ) {
 		return;
-	}//end if
+	}
 
 	global $submenu;
 	$menu_slug = 'edit.php?post_type=nelio_popup';
@@ -29,7 +28,7 @@ function register_submenus() {
 				_x( 'https://neliosoftware.com/popups/', 'text', 'nelio-popups' )
 			),
 		);
-	}//end if
+	}
 
 	// phpcs:ignore
 	$submenu[ $menu_slug ][] = array(
@@ -37,5 +36,5 @@ function register_submenus() {
 		'edit_others_nelio_popups',
 		_x( 'https://wordpress.org/support/plugin/nelio-popups/', 'text', 'nelio-popups' ),
 	);
-}//end register_submenus()
+}
 add_action( 'admin_menu', __NAMESPACE__ . '\register_submenus' );
